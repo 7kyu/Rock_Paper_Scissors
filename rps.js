@@ -1,50 +1,67 @@
+function getHumanChoice() {
+  let isChoiceCorrect = false;
+  while(!isChoiceCorrect) {
+      let humanChoice = prompt("Choose rock, paper or scissors!").toLowerCase();
+      if (humanChoice === "rock" || humanChoice === "paper" || humanChoice === "scissors") {
+          return humanChoice;
+      } else {
+          alert("Please enter a valid choice.");
+      }
+  }
+}
+
 function getComputerChoice() {
-    const choices = ['Rock','Paper','Scissors'];
-    const randomIndex = Math.floor(Math.random() * choices.length);
-    return choices[randomIndex];
+  let randomNum = Math.random();
+  if (randomNum <= 0.33) {
+      return "rock";
+  } else if (randomNum <= 0.66) {
+      return "paper";
+  } else {
+      return "scissors"
+  }
 }
 
 
-  function game () {
-    function playRound(playerSelection, computerSelection) {
-        playerSelection = playerSelection.toLowerCase();
-        computerSelection = computerSelection.toLowerCase();
-      
-        if (playerSelection === computerSelection) {
-          return "It's a tie!";
-        } else if (
-          (playerSelection === 'rock' && computerSelection === 'scissors') ||
-          (playerSelection === 'paper' && computerSelection === 'rock') ||
-          (playerSelection === 'scissors' && computerSelection === 'paper')
-        ) {
-          return `You win! ${playerSelection} beats ${computerSelection}`;
-        } else {
-          return `You lose! ${computerSelection} beats ${playerSelection}`;
-        }
-      }
+function playGame() {
+  let humanScore = 0;
+  let computerScore = 0;
 
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt('Enter your choice (Rock, Paper, or Scissors):');
-        const computerSelection = getComputerChoice();
-        const result = playRound(playerSelection, computerSelection);
-    
-        console.log(result);
-    
-        if (result.startsWith('You win')) {
-          playerScore++;
-        } else if (result.startsWith('You lose')) {
+  function playRound(humanChoice, computerChoice) {
+      let capitalizedHumanChoice = String(humanChoice).charAt(0).toUpperCase() + String(humanChoice).slice(1);
+      let capitalizedComputerChoice = String(computerChoice).charAt(0).toUpperCase() + String(computerChoice).slice(1);
+      let humanWon = humanChoice === "rock" && computerChoice === "scissors" || 
+                      humanChoice === "paper" && computerChoice === "rock" ||
+                      humanChoice === "scissors" && computerChoice === "paper";
+      let computerWon = humanChoice === "scissors" && computerChoice === "rock" ||
+                      humanChoice === "rock" && computerChoice === "paper" ||
+                      humanChoice === "paper" && computerChoice === "scissors";
+      if (humanWon) {
+          humanScore++;
+          return "You won! " + capitalizedHumanChoice + " beats " + capitalizedComputerChoice;
+      } else if (computerWon) {
           computerScore++;
-        }
-      }
-    
-      if (playerScore > computerScore) {
-        console.log(`You win the game! Final score: ${playerScore} - ${computerScore}`);
-      } else if (computerScore > playerScore) {
-        console.log(`You lose the game! Final score: ${computerScore} - ${playerScore}`);
+          return "You lost! " + capitalizedComputerChoice + " beats " + capitalizedHumanChoice;
       } else {
-        console.log(`It's a tie! Final score: ${playerScore} - ${computerScore}`);
+          return "It's a Draw. You both chose " + capitalizedHumanChoice;
       }
-    }
+  }
+
+  function currentScore() {
+      return "You: " + humanScore + " Computer: " + computerScore;
+  }
+
+  for (i = 0; i < 5; i++) {
+      console.log(playRound(getHumanChoice(), getComputerChoice()));
+      console.log(currentScore());
+  }
+
+  if (humanScore != computerScore) {
+      let finalWinner = (humanScore > computerScore) ? "You" : "Computer";
+      console.log("The final winner is: " + finalWinner);    
+  } else {
+      console.log("The final score is a Draw!")
+  }
+  console.log(currentScore());
+}
+
+playGame();
