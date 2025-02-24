@@ -50,10 +50,10 @@ function playGame() {
       return "You: " + humanScore + " Computer: " + computerScore;
   }
 
-  for (i = 0; i < 5; i++) {
-      console.log(playRound(getHumanChoice(), getComputerChoice()));
-      console.log(currentScore());
-  }
+  // for (i = 0; i < 5; i++) {
+  //     console.log(playRound(getHumanChoice(), getComputerChoice()));
+  //     console.log(currentScore());
+  // }
 
   if (humanScore != computerScore) {
       let finalWinner = (humanScore > computerScore) ? "You" : "Computer";
